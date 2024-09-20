@@ -12,8 +12,8 @@ const Contacto = () => (
       </ul>
     </nav>
     <h1>Esta es la página de contacto</h1>
-    <p>Welcome to page 2</p>
-    <Link to="/">Go back to the homepage</Link>
+    {/* <p>Welcome to page 2</p>
+    <Link to="/">Go back to the homepage</Link> */}
    
   </Layout>
   

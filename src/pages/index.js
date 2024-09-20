@@ -1,12 +1,11 @@
 import * as React from "react"
-import { StaticImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
-import { Link } from "gatsby"
-import * as styles from "../components/index.module.css"
+import { Link, graphql } from "gatsby"
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import Card from "../components/card/card"
 
-const IndexPage = () => (
+const IndexPage = ({data}) => (
   <Layout>
     <nav>
       <ul>
@@ -15,23 +14,20 @@ const IndexPage = () => (
       </ul>
     </nav>
     <div className='contenedor-card'>
-      <Card
-      title='Amadeo'
-      description='Amadeo es guay'
-    ></Card>
-      <Card 
-      title='Amadeo'
-      footphoto='se rasca un pie'
-      image='https://placehold.co/600x400/000000/FFF'
-      description='Amadeo es guay'
-    ></Card>
-      
-      <Card
-      title='Amadeo'
-      footphoto='se rasca un pie'
-      image='https://placehold.co/600x400'
-      description='Amadeo es guay'
-    ></Card>
+    <div>
+      {data.allTecnologiasJson.edges.map(({ node }) => {
+        const image = getImage(node.image);
+        return (
+          <div key={node.id}>
+            <h2>{node.title}</h2>
+            <p>{node.description}</p>
+            <GatsbyImage image={image} alt={node.title} />
+            <a href={node.link}>Leer más</a>
+          </div>
+        );
+      })}
+    </div>
+
 
     </div>
   </Layout>
@@ -42,6 +38,33 @@ const IndexPage = () => (
  *
  * See: https://www.gatsbyjs.com/docs/reference/built-in-components/gatsby-head/
  */
+export const query = graphql
+`
+query MyQuery {
+  allTecnologiasJson {
+    edges {
+      node {
+        id
+        link
+        title
+        image {
+          childImageSharp {
+            gatsbyImageData(
+              placeholder: DOMINANT_COLOR
+              formats: WEBP
+              height: 100
+              width: 210
+              aspectRatio: 1.77
+            )
+          }
+        }
+        description
+      }
+    }
+  }
+}
+
+`
 export const Head = () => <Seo title="Inicio" />
 
 export default IndexPage
